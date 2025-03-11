@@ -1,0 +1,155 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-size: cover;
+    background-blend-mode: multiply;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Special Elite', serif;/*I took this part from chatgpt*/
+}
+.main{
+    width: 100%;
+    background:linear-gradient(to top, rgba(0, 0, 0, 0.5)50%,rgba(0,0,0,0.5)50%), url(webiste1.jpg);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
+
+/*I took this login part from chatgpt*/
+.login{
+    width: 600px;
+    padding: 40px;
+    text-align: center;
+    background: linear-gradient(#e4c590, #c2a05c);
+    filter: sepia(40%) contrast(1.2);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    border: 7px solid black;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+    color: #3a1c00;
+    text-transform: uppercase;
+    font-weight: bold;
+    filter: sepia(30%);
+    position: relative;
+}
+
+/*I took this login h1 part from chatgpt*/
+.login h1{
+    font-size: 60px;
+            font-weight: 900;
+            text-shadow: 2px 2px 0px black;
+            letter-spacing: 5px;
+}
+
+/*I took this login input part from chatgpt*/
+.login input{
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid black;
+    background: #d8b075;
+    font-family: 'Special Elite', cursive;
+    color: black;
+}
+
+/*I took this btn part from chatgpt*/
+.btn{
+    background: #b06d27;
+    color: black;
+    padding: 10px 20px;
+    border: 2px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #8a4f1a;
+}
+
+/* I found this svg part from a youtube video and adjust it for my code */
+svg{
+    display: block;
+    height: 150px;
+    width: 150px;
+}
+
+.icon{
+    animation: rotate 6s infinite;
+    transform-origin: 50px 50px;
+}
+
+@keyframes rotate{
+    3% { transform: rotate(0deg);}
+    18% { transform: rotate(-60deg);}
+    33% { transform: rotate(-120deg);}
+    48% { transform: rotate(-180deg);}
+    63% { transform: rotate(-240deg);}
+    81% { transform: rotate(-300deg);}
+    100% { transform: rotate(-720deg);}
+}
+
+.round-1{animation: fire-1 6s infinite;}
+.round-2{animation: fire-2 6s infinite;}
+.round-3{animation: fire-3 6s infinite;}
+.round-4{animation: fire-4 6s infinite;}
+.round-5{animation: fire-5 6s infinite;}
+.round-6{animation: fire-6 6s infinite;}
+
+@keyframes fire-1{
+    7.5%{opacity: 0;}
+    84%{opacity: 0;}
+}
+@keyframes fire-2{
+    15%{opacity: 1;}
+    22%{opacity: 0;}
+    84%{opacity: 0;}
+}
+@keyframes fire-3{
+    30%{opacity: 1;}
+    37.5%{opacity: 0;}
+    84%{opacity: 0;}
+}
+@keyframes fire-4{
+    45%{opacity: 1;}
+    52.5%{opacity: 0;}
+    84%{opacity: 0;}
+}
+@keyframes fire-5{
+    60%{opacity: 1;}
+    67.5%{opacity: 0;}
+    84%{opacity: 0;}
+}
+@keyframes fire-6{
+    75%{opacity: 1;}
+    82.5%{opacity: 0;}
+    84%{opacity: 0;}
+}
+
+.clock{
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+.clock h1{
+    transform: translate(-50% 50%);
+    letter-spacing: 3px;
+    font-size: 60px;
+            font-weight: 900;
+            text-shadow: 2px 2px 0px black;
+            letter-spacing: 5px;
+}
+.hidden{
+    display: none;
+}
