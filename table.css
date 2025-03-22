@@ -1,0 +1,118 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+body {
+    background:linear-gradient(to top, rgba(0, 0, 0, 0.5)50%,rgba(0,0,0,0.5)50%), url(webiste1.jpg);
+    background-size: cover;
+    background-blend-mode: multiply;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Special Elite', serif;/*I took this part from chatgpt*/
+}
+.main{
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+}
+.container{
+    padding-top: 30px;
+    padding-inline: 60px;
+    width: 750px;
+    height: 350px;
+    background: linear-gradient(#e4c590, #c2a05c);
+    filter: sepia(40%) contrast(1.2);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    border: 7px solid black;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+    color: #3a1c00;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    filter: sepia(20%);
+    position: relative;
+    /*I took this part from chat-gpt*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left; 
+}
+label {
+    align-self: flex-start;
+    margin-left: 63px;
+}
+input {
+    width: 80%;
+    padding: 8px;
+    font-size: 18px;
+    border: 2px solid black;
+    background: #d8b075;
+    font-family: 'Special Elite', serif;
+    color: black;
+}
+.btn{
+    width: 83%;
+    background: #b06d27;
+    color: black;
+    padding: 10px 280px;
+    border: 2px solid black;
+    font-weight: bold;
+    font-family: 'Special Elite', serif;;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 25px;
+}
+button:hover {
+    background: #8a4f1a;
+}
+.tback{
+    width: 70vh;
+    height: 40vh;
+    background: linear-gradient(#e4c590, #c2a05c);
+    filter: sepia(40%) contrast(1.2);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    border: 7px solid black;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+    color: #3a1c00;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    filter: sepia(10%);
+    position: relative;
+    padding-top: 10px;
+}
+.table{
+    width: 90%;
+    margin: 0 auto;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-collapse: collapse;
+    border: 0;
+}
+th {
+    color: #3a1c00;
+    font-size: 22px;
+    border: 0;
+    padding: 8px;
+    border-bottom: 2px solid #000000;
+}
+td {
+    text-align: center;
+    border: 0;
+    padding: 8px;
+}
+tr:nth-child(even) {background-color: #daceac;}
+tr:hover {
+    background-color: #a76a2a;
+    transition: background 0.3s ease-in-out; 
+}
