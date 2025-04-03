@@ -1,0 +1,70 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Form on the left -->
+        <div class="col-md-4">
+            <h2>Add Class</h2>
+            <form method="post" asp-page-handler="Add">
+                <div class="mb-3">
+                    <label asp-for="ClassInfo.ClassName" class="form-label">Class Name</label>
+                    <input asp-for="ClassInfo.ClassName" class="form-control" />
+                    <span asp-validation-for="ClassInfo.ClassName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClassInfo.StudentCount" class="form-label">Student Count</label>
+                    <input asp-for="ClassInfo.StudentCount" class="form-control" type="number" />
+                    <span asp-validation-for="ClassInfo.StudentCount" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClassInfo.Description" class="form-label">Description</label>
+                    <textarea asp-for="ClassInfo.Description" class="form-control"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Class</button>
+            </form>
+        </div>
+
+        <div class="col-md-8">
+            <h2>Class List</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Class Name</th>
+                        <th>Student Count</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in IndexModel.ClassList)
+                    {
+                        <tr>
+                            <td>@item.ID</td>
+                            <td>@item.ClassName</td>
+                            <td>@item.StudentCount</td>
+                            <td>@item.Description</td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="ID" value="@item.ID" />
+                                    <button type="submit" asp-page-handler="Delete" class="fas fa-trash-alt"></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
