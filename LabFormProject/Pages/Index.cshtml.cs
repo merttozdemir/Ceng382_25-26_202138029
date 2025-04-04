@@ -5,6 +5,7 @@ using Database.Models;
 
 namespace LabFormProject.Pages
 {
+    /*I took most of the parts of this class from the chat gpt.*/
     public class IndexModel : PageModel
     {
         
@@ -33,7 +34,7 @@ namespace LabFormProject.Pages
             if (item != null)
             {
                 ClassList.Remove(item);
-                ClassInfo.DeclareID();
+                ClassInfo.DeclareID(item.ID);
             }
             return RedirectToPage();
         }

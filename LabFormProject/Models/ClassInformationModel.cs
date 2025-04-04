@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Database.Models
 {
+    /*I took lots of the parts of this class from the chat gpt except DeclareID*/
     public class ClassInformationModel
     {
         private static int IDCounter = 1;
@@ -18,9 +19,12 @@ namespace Database.Models
         {
             ID=IDCounter++;
         }
-        public void DeclareID()
-        {
-            ID = IDCounter--;
+        public void DeclareID(int id)
+        {   
+            if (id+1 == IDCounter)
+            {
+                IDCounter--;
+            }
         }
     }
 }
