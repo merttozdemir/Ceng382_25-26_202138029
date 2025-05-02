@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using Database.Models;
 using System.Linq;
+using System.Diagnostics;
+using System.Text;
 
 namespace LabFormProject.Pages
 {
@@ -99,5 +101,42 @@ namespace LabFormProject.Pages
             }
             return RedirectToPage();
         }
+
+        public IActionResult OnPostExportJson(string mode, List<string>? SelectedColumns)
+        {
+            List<ClassInformationTable> exportData;
+
+            if (mode == "filtered")
+            {
+                // Filtreyi yeniden uygula çünkü POST'ta FilteredTableData boş olur!
+                var filtered = string.IsNullOrWhiteSpace(FilterClassName)
+                    ? ClassList
+                    : ClassList.Where(c => c.ClassName != null && c.ClassName.Contains(FilterClassName, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                exportData = filtered
+                    .Select(c => new ClassInformationTable
+                    {
+                        ID = c.ID,
+                        ClassName = c.ClassName,
+                        StudentCount = c.StudentCount,
+                        Description = c.Description
+                    }).ToList();
+            }
+            else
+            {
+                exportData = ClassList
+                    .Select(c => new ClassInformationTable
+                    {
+                        ID = c.ID,
+                        ClassName = c.ClassName,
+                        StudentCount = c.StudentCount,
+                        Description = c.Description
+                    }).ToList();
+            }
+
+            string json = Utils.Instance.ExportToJson(exportData, SelectedColumns);
+            return File(System.Text.Encoding.UTF8.GetBytes(json), "application/json", "export.json");
+        }
     }
 }
+
