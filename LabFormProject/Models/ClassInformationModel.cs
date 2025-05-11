@@ -1,30 +1,21 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Database.Models
+namespace LabFormProject.Models
 {
-    /*I took lots of the parts of this class from the chat gpt except DeclareID*/
     public class ClassInformationModel
     {
-        private static int IDCounter = 1;
-        public int ID { get; private set; }
+        [Key]
+        public int ID { get; set; }
+
         [Required]
         public string? ClassName { get; set; }
+
         [Required]
-        [Range(1, int.MaxValue)]
-        public int StudentCount { get; set; }
-        [Required]
+        public int? StudentCount { get; set; }
+
         public string? Description { get; set; }
 
-        public void SetID()
-        {
-            ID=IDCounter++;
-        }
-        public void DeclareID(int id)
-        {   
-            if (id+1 == IDCounter)
-            {
-                IDCounter--;
-            }
-        }
+        [Required]
+        public bool IsActive { get; set; }
     }
 }

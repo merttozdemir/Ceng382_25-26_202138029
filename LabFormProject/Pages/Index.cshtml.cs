@@ -1,41 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Database.Models;
 using System.Linq;
 using System.Diagnostics;
 using System.Text;
+using LabFormProject.Data;
+using LabFormProject.Models;
 
+//I took lots of the code from Chatgpt
 namespace LabFormProject.Pages
 {
-    /*I took most of the parts of this class from the chat gpt.*/
     public class IndexModel : PageModel
     {
-        private void GenerateSampleData(int count)
+        private readonly SchoolDbContext _context;
+
+        public IndexModel(SchoolDbContext context)
         {
-            var random = new Random();
-            var subjects = new[] { "Math", "Science", "History", "English", "Art", "Music", "Physics", "Biology", "Chemistry", "Geography" };
-
-            for (int i = 0; i < count; i++)
-            {
-                var className = $"{subjects[random.Next(subjects.Length)]} {random.Next(1, 10)}";
-                var studentCount = random.Next(10, 35);
-                var description = $"This is class {className} with {studentCount} students.";
-
-                var newClass = new ClassInformationModel
-                {
-                    ClassName = className,
-                    StudentCount = studentCount,
-                    Description = description
-                };
-                newClass.SetID();
-                ClassList.Add(newClass);
-            }
+            _context = context;
         }
-        
+
         public int TotalPages { get; set; }
+
         [BindProperty]
-        public ClassInformationModel ClassInfo { get; set; } = new();
+        public ClassInformationModel ClassInfo { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string? FilterClassName { get; set; }
@@ -45,98 +33,84 @@ namespace LabFormProject.Pages
 
         public int PageSize { get; set; } = 10;
 
-        public List<ClassInformationTable> FilteredTableData { get; set; } = new();
+        public List<ClassInformationModel> FilteredTableData { get; set; } = new();
 
-        public static List<ClassInformationModel> ClassList { get; set; } = new();
-        public void OnGet(string? filterClassName, int pageNumber = 1, int pageSize = 10) 
+
+
+        public async Task<IActionResult> OnGetAsync(string? filterClassName, int pageNumber = 1, int pageSize = 10)
         {
-            if (ClassList.Count == 0)
-            {
-                GenerateSampleData(100); 
-            }
 
             FilterClassName = filterClassName ?? string.Empty;
             PageNumber = pageNumber;
             PageSize = pageSize;
 
-            var filtered = string.IsNullOrWhiteSpace(FilterClassName)
-                ? ClassList
-                : ClassList.Where(c => c.ClassName != null && c.ClassName.Contains(FilterClassName, StringComparison.OrdinalIgnoreCase)).ToList();
+            var query = _context.ClassInformationTable.AsQueryable();
 
-            TotalPages = (int)Math.Ceiling(filtered.Count / (double)PageSize);
+            if (!string.IsNullOrWhiteSpace(FilterClassName))
+            {
+                query = query.Where(c => c.ClassName.Contains(FilterClassName));
+            }
 
-            FilteredTableData = filtered
+            var totalCount = await query.CountAsync();
+            TotalPages = (int)Math.Ceiling(totalCount / (double)PageSize);
+
+            FilteredTableData = await query
+                .OrderBy(c => c.ID)
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
-                .Select(c => new ClassInformationTable
-                {
-                    ID = c.ID,
-                    ClassName = c.ClassName,
-                    StudentCount = c.StudentCount,
-                    Description = c.Description
-                })
-                .ToList();
+                .ToListAsync();
+
+            return Page();
         }
 
-       public IActionResult OnPostAdd()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostAddAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            ClassInfo.SetID();
-            ClassList.Add(ClassInfo);
+            _context.ClassInformationTable.Add(ClassInfo);
+            await _context.SaveChangesAsync();
 
-            return RedirectToPage();
+            return RedirectToPage("/Index");
         }
 
-        public IActionResult OnPostDelete(int ID)
+        public async Task<IActionResult> OnPostDeleteAsync(int ID)
         {
-            var item = ClassList.Find(x => x.ID == ID);
+            var item = await _context.ClassInformationTable.FindAsync(ID);
             if (item != null)
             {
-                ClassList.Remove(item);
-                ClassInfo.DeclareID(item.ID);
+                _context.ClassInformationTable.Remove(item);
+                await _context.SaveChangesAsync();
             }
-            return RedirectToPage();
+
+            return RedirectToPage("/Index");
         }
 
-        public IActionResult OnPostExportJson(string mode, List<string>? SelectedColumns)
+        public async Task<IActionResult> OnPostExportJsonAsync(string mode, List<string>? SelectedColumns)
         {
-            List<ClassInformationTable> exportData;
+            IQueryable<ClassInformationModel> query = _context.ClassInformationTable;
 
-            if (mode == "filtered")
+            if (mode == "filtered" && !string.IsNullOrWhiteSpace(FilterClassName))
             {
-                // Filtreyi yeniden uygula çünkü POST'ta FilteredTableData boş olur!
-                var filtered = string.IsNullOrWhiteSpace(FilterClassName)
-                    ? ClassList
-                    : ClassList.Where(c => c.ClassName != null && c.ClassName.Contains(FilterClassName, StringComparison.OrdinalIgnoreCase)).ToList();
-
-                exportData = filtered
-                    .Select(c => new ClassInformationTable
-                    {
-                        ID = c.ID,
-                        ClassName = c.ClassName,
-                        StudentCount = c.StudentCount,
-                        Description = c.Description
-                    }).ToList();
-            }
-            else
-            {
-                exportData = ClassList
-                    .Select(c => new ClassInformationTable
-                    {
-                        ID = c.ID,
-                        ClassName = c.ClassName,
-                        StudentCount = c.StudentCount,
-                        Description = c.Description
-                    }).ToList();
+                query = query.Where(c => c.ClassName.Contains(FilterClassName));
             }
 
-            string json = Utils.Instance.ExportToJson(exportData, SelectedColumns);
-            return File(System.Text.Encoding.UTF8.GetBytes(json), "application/json", "export.json");
+            var exportData = await query.ToListAsync();
+
+            var tableFormat = exportData.Select(c => new ClassInformationModel
+            {
+                ID = c.ID,
+                ClassName = c.ClassName,
+                StudentCount = c.StudentCount,
+                Description = c.Description,
+                IsActive = c.IsActive
+            }).ToList();
+
+            string json = Utils.Instance.ExportToJson(tableFormat, SelectedColumns);
+            return File(Encoding.UTF8.GetBytes(json), "application/json", "export.json");
         }
     }
 }
-

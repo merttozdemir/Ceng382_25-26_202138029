@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "I+Z4DjORaa46YHRq3oAI4gHWcUO3Eb0efipIuohTd+4=",
+  "Hash": "IYsCQdPc3RRgyaU1Tc+4ZQ1QQbBGs0FPzGXYZ1T+5LM=",
   "Source": "LabFormProject",
   "BasePath": "_content/LabFormProject",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\VS-Code\\CENG 382\\Lab\\LabFormProject\\wwwroot\\data\\users.json",
+      "SourceId": "LabFormProject",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VS-Code\\CENG 382\\Lab\\LabFormProject\\wwwroot\\",
+      "BasePath": "_content/LabFormProject",
+      "RelativePath": "data/users.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\users.json"
     },
     {
       "Identity": "C:\\VS-Code\\CENG 382\\Lab\\LabFormProject\\wwwroot\\favicon.ico",

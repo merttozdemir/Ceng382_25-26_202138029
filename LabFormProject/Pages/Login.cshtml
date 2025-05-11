@@ -1,0 +1,24 @@
+@page
+@model LabFormProject.Pages.LoginModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<h2>Login</h2>
+<!-- I took lots of the parts from chat gpt -->
+<form method="post">
+    <div class="mb-3">
+        <label for="username">Username</label>
+        <input name="UserName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <input name="Password" type="password" class="form-control" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>

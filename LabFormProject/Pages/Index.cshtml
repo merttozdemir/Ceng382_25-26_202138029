@@ -3,11 +3,11 @@
 @{
     ViewData["Title"] = "Home page";
 }
- <!-- I took all of the parts of this code from the chat gpt. -->
+<!-- I took lots of the parts from Chatgpt. -->
 <div class="container mt-4">
     <div class="row">
         <!-- Form on the left -->
-        <div class="col-md-4">
+        <div class="col-md-4 mb-4">
             <h2>Add Class</h2>
             <form method="post" asp-page-handler="Add">
                 <div class="mb-3">
@@ -27,7 +27,12 @@
                     <textarea asp-for="ClassInfo.Description" class="form-control"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Class</button>
+                <div class="mb-3 form-check">
+                    <input asp-for="ClassInfo.IsActive" class="form-check-input" type="checkbox" checked />
+                    <label asp-for="ClassInfo.IsActive" class="form-check-label">Is Active</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Add Class</button>
             </form>
         </div>
 
@@ -49,19 +54,22 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Class Name</th>
                         <th>Student Count</th>
                         <th>Description</th>
-                        <th>Actions</th>
+                        <th>Is Active</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.FilteredTableData)
                     {
                         <tr>
+                            <td>@item.ID</td>
                             <td>@item.ClassName</td>
                             <td>@item.StudentCount</td>
                             <td>@item.Description</td>
+                            <td>@(item.IsActive ? "Yes" : "No")</td>
                             <td>
                                 <form method="post">
                                     <input type="hidden" name="ID" value="@item.ID" />
@@ -100,32 +108,31 @@
                     </ul>
                 </nav>
             </div>
-        <h4>Export Options</h4>
 
-        <form method="post" asp-page-handler="ExportJson">
-            <div class="mb-2">
-                <label>Select columns to export:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="SelectedColumns" value="ClassName" id="colClassName" />
-                    <label class="form-check-label" for="colClassName">Class Name</label>
+            <h4>Export Options</h4>
+            <form method="post" asp-page-handler="ExportJson">
+                <div class="mb-2">
+                    <label>Select columns to export:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedColumns" value="ClassName" id="colClassName" />
+                        <label class="form-check-label" for="colClassName">Class Name</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedColumns" value="StudentCount" id="colStudentCount" />
+                        <label class="form-check-label" for="colStudentCount">Student Count</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedColumns" value="Description" id="colDescription" />
+                        <label class="form-check-label" for="colDescription">Description</label>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="SelectedColumns" value="StudentCount" id="colStudentCount" />
-                    <label class="form-check-label" for="colStudentCount">Student Count</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="SelectedColumns" value="Description" id="colDescription" />
-                    <label class="form-check-label" for="colDescription">Description</label>
-                </div>
-            </div>
 
-            <input type="hidden" name="FilterClassName" value="@Model.FilterClassName" />
-
-            <button type="submit" class="btn btn-success me-2" name="mode" value="filtered">Export Filtered to JSON</button>
-            <button type="submit" class="btn btn-info" name="mode" value="all">Export All to JSON</button>
-        </form>
+                <input type="hidden" name="FilterClassName" value="@Model.FilterClassName" />
+                <button type="submit" class="btn btn-success me-2" name="mode" value="filtered">Export Filtered to JSON</button>
+                <button type="submit" class="btn btn-info" name="mode" value="all">Export All to JSON</button>
+            </form>
         </div>
-    </div>  
+    </div>
 </div>
 
 @section Scripts {
